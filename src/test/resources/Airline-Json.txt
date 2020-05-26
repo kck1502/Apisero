@@ -1,0 +1,16 @@
+[
+	{
+		"id": "1",
+		"Airline": "ETIHAD",
+		"From": "Mumbai",
+		"To": "UAE",
+		"Price": 200.01
+	},
+	{
+		"id": "2",
+		"Airline": "INDIGO",
+		"From": "Mumbai",
+		"To": "UAE",
+		"Price": 201.02
+	}
+]

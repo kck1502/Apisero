@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:batch="http://www.mulesoft.org/schema/mule/batch" xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/batch http://www.mulesoft.org/schema/mule/batch/current/mule-batch.xsd">
+	<flow name="test3Flow" doc:id="b8408dc1-88f5-4f09-b169-545626d24021" >
+		<set-variable value="1" doc:name="Set Variable" doc:id="50c51415-da26-4992-a4c6-d2d3e9dd18c1" variableName="counter"/>
+		<set-payload value="#[[1,2,3]]" doc:name="Set Payload" doc:id="2722c7f1-42ab-465c-9ac1-ecb7ddfc7129" />
+		<batch:job jobName="test3Batch_Job" doc:id="6bfd591c-2d5b-45e0-b916-820bfffbc2e2" blockSize="1">
+			<batch:process-records >
+				<batch:step name="Batch_Step" doc:id="29834925-86f0-4ae4-9601-ae3cc0303979" >
+					<set-variable value="#[(vars.counter)+10]" doc:name="Set Variable" doc:id="32bd8a12-29d1-436b-9494-e643d3dac736" variableName="counter"/>
+					<set-variable value="#[vars.counter]" doc:name="Set Variable" doc:id="24456b79-96bc-438b-8a96-02a10b0c9bff" variableName="stepvar"/>
+				</batch:step>
+			</batch:process-records>
+			<batch:on-complete >
+				<logger level="INFO" doc:name="Logger" doc:id="924c12f1-5c38-4ede-b6a5-3983d10bee81" message='#[vars.stepvar as String ++ "-" ++ vars.counter as String]'/>
+			</batch:on-complete>
+		</batch:job>
+	</flow>
+</mule>

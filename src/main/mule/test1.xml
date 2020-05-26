@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+	<http:listener-config name="HTTP_Listener_config" doc:name="HTTP Listener config" doc:id="518cd993-6731-4b45-9a85-d39d2ec2dfb0" >
+		<http:listener-connection host="0.0.0.0" port="8081" />
+	</http:listener-config>
+	<flow name="test1Flow1" doc:id="c11eda29-2993-449e-9cca-0a8383f35d1c" >
+		<ee:transform doc:name="Transform Message" doc:id="9ef34271-1b4f-4433-ac21-d0430d4c8e8d" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/xml
+---
+{
+	Details: {
+		name: payload.Details.name ++ "XML",
+		company: payload.Details.company
+	}
+}]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<logger level="INFO" doc:name="Logger" doc:id="433ba62d-e62a-415f-a94e-0b51820e671b" message="#[payload]"/>
+	</flow>
+	<flow name="test1Flow" doc:id="6ee9ebe5-6081-4674-a557-8fdefc867ef5" >
+		<http:listener doc:name="Listener" doc:id="b1f9eb08-7c5f-408b-bbcc-1c80ca0f14e4" config-ref="HTTP_Listener_config" path="/test1"/>
+		<ee:transform doc:name="Transform Message" doc:id="411027a2-1942-4da7-b3fa-f489ad34d3a9" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+	"Details": 
+	{
+		"name": "kck",
+		"company": "Apisero"
+	}]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<flow-ref doc:name="test1Flow1" doc:id="d1efe07f-cbf0-4daa-a19b-19c94715091d" name="test1Flow1" target="payload"/>
+	</flow>
+</mule>

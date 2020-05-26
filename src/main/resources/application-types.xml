@@ -1,0 +1,47 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<types:mule xmlns:types="http://www.mulesoft.org/schema/mule/types">
+  <types:catalog>
+    <types:type name="test1XML" format="json">
+      <types:shape format="weave" example="test1.json"><![CDATA[%dw 2.0
+
+type test1XML = {|
+  Details: {|
+    name: String, 
+    company: String
+  |}
+|} {"example": "{\\\"Details\\\":{\\\"name\\\":\\\"kck\\\",\\\"company\\\":\\\"Apisero\\\"}}"}
+
+]]></types:shape>
+    </types:type>
+    <types:type name="AirlineJson" format="json">
+      <types:shape format="weave" example="examples/Airline-Json.txt"><![CDATA[%dw 2.0
+
+type AirlineJson = Array<{|  id: String,   Airline: String,   From: String,   To: String,   Price: Number {"typeId": "double"}|}> {"example": "[{\\\"id\\\":\\\"1\\\",\\\"Airline\\\":\\\"ETIHAD\\\",\\\"From\\\":\\\"Mumbai\\\",\\\"To\\\":\\\"UAE\\\",\\\"Price\\\":200.01},{\\\"id\\\":\\\"2\\\",\\\"Airline\\\":\\\"INDIGO\\\",\\\"From\\\":\\\"Mumbai\\\",\\\"To\\\":\\\"UAE\\\",\\\"Price\\\":201.02}]"}
+
+]]></types:shape>
+    </types:type>
+  </types:catalog>
+  <types:enrichment select="#9ef34271-1b4f-4433-ac21-d0430d4c8e8d">
+    <types:processor-declaration>
+      <types:input-event>
+        <types:message>
+          <types:payload type="test1XML"/>
+        </types:message>
+      </types:input-event>
+      <types:output-event>
+        <types:message>
+          <types:payload type="test1XML"/>
+        </types:message>
+      </types:output-event>
+    </types:processor-declaration>
+  </types:enrichment>
+  <types:enrichment select="#883105fe-53a7-4f98-acd5-4fffb97ac75a">
+    <types:processor-declaration>
+      <types:input-event>
+        <types:message>
+          <types:payload type="AirlineJson"/>
+        </types:message>
+      </types:input-event>
+    </types:processor-declaration>
+  </types:enrichment>
+</types:mule>
