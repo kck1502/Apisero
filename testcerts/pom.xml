@@ -31,7 +31,7 @@
 						<muleVersion>4.3.0</muleVersion>
 						<username>Chaitu1502</username>
 						<password>Chaitu@97</password>
-						<applicationName>testingJenkinsDeployment</applicationName>
+						<applicationName>testingJenkinsDeploymentFromGIT</applicationName>
 						<environment>Sandbox</environment>
 						<region>eu-west-1</region>
 						<workers>1</workers>
