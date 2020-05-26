@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:db="http://www.mulesoft.org/schema/mule/db" xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/db http://www.mulesoft.org/schema/mule/db/current/mule-db.xsd">
+	<db:config name="Database_Config" doc:name="Database Config" doc:id="516fc6e3-2ffd-4ee6-803c-d27d8ba600b3" >
+		<db:oracle-connection host="localhost" user="sys as sysdba" password="tiger" instance="XE" />
+	</db:config>
+	<flow name="test4Flow" doc:id="3f8e0bdb-95d2-4989-ad21-ae79d1bef114" >
+		<http:listener doc:name="Listener" doc:id="e947541f-f13f-4c5d-819f-9ad9206f4bfc" config-ref="HTTP_Listener_config" path="/test4"/>
+		<db:insert doc:name="Insert" doc:id="e36b0818-d5c5-4e62-97e6-caf808f9c212" config-ref="Database_Config" autoGenerateKeys="true">
+			<reconnect-forever />
+			<db:sql >insert into test4 values(:id,:name)</db:sql>
+			<db:input-parameters ><![CDATA[#[{
+	"id":message.attributes.queryParams.username,
+	"name": message.attributes.queryParams.username
+}]]]></db:input-parameters>
+			<db:auto-generated-keys-column-indexes >
+				<db:auto-generated-keys-column-index value="1" />
+			</db:auto-generated-keys-column-indexes>
+		</db:insert>
+	</flow>
+</mule>
